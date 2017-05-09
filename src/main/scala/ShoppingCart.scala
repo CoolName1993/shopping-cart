@@ -12,6 +12,7 @@ class ShoppingCart {
   def calculateOrangeDiscount(items: Seq[Item]): Double =
     round((items.count(_.eq(Orange)) / ORANGE_DISCOUNT_NUMBER).toInt * Orange.price)
 
-  def checkout(items: Seq[Item]): Double = items.map(_.price).sum
+  def checkout(items: Seq[Item]): Double =
+    round(items.map(_.price).sum - calculateAppleDiscount(items) - calculateOrangeDiscount(items))
 
 }
