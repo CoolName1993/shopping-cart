@@ -59,6 +59,15 @@ class ShoppingCartSpec extends WordSpec with MustMatchers with GeneratorDrivenPr
       result mustBe expectedResult
     }
 
+    "calculate the total discount to be 1.2 when 5 apples and 2 oranges are in the basket" in {
+      val classUnderTest: ShoppingCart = new ShoppingCart()
+      val input: Seq[Item] = Seq(Apple, Apple, Apple, Apple, Apple, Orange, Orange)
+      val result: Double = classUnderTest.calculateAppleDiscount(input)
+      val expectedResult: Double = 1.2D
+
+      result mustBe expectedResult
+    }
+
   }
 
   "calculateOrangeDiscount" must {
@@ -102,6 +111,15 @@ class ShoppingCartSpec extends WordSpec with MustMatchers with GeneratorDrivenPr
     "calculate the total discount to be 0.5 when 7 oranges are in the basket" in {
       val classUnderTest: ShoppingCart = new ShoppingCart()
       val input: Seq[Item] = Seq(Orange, Orange, Orange, Orange, Orange, Orange)
+      val result: Double = classUnderTest.calculateOrangeDiscount(input)
+      val expectedResult: Double = 0.5D
+
+      result mustBe expectedResult
+    }
+
+    "calculate the total discount to be 0.5 when 7 oranges and 3 apples are in the basket" in {
+      val classUnderTest: ShoppingCart = new ShoppingCart()
+      val input: Seq[Item] = Seq(Orange, Orange, Orange, Orange, Orange, Orange, Apple, Apple, Apple)
       val result: Double = classUnderTest.calculateOrangeDiscount(input)
       val expectedResult: Double = 0.5D
 
