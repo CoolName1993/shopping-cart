@@ -130,20 +130,20 @@ class ShoppingCartSpec extends WordSpec with MustMatchers with GeneratorDrivenPr
 
   "checkout" must {
 
-    "calculate the total price of 3 Apples and 1 Orange to 2.05" in {
+    "calculate the total price of 3 Apples and 1 Orange to 1.45" in {
       val classUnderTest: ShoppingCart = new ShoppingCart()
       val input: Seq[Item] = Seq(Apple, Apple, Apple, Orange)
       val result: Double = classUnderTest.checkout(input)
-      val expectedResult: Double = 2.05D
+      val expectedResult: Double = 1.45D
 
       result mustBe expectedResult
     }
 
-    "calculate the total price of 1 Apple and 3 Oranges to 1.35" in {
+    "calculate the total price of 1 Apple and 3 Oranges to 1.10" in {
       val classUnderTest: ShoppingCart = new ShoppingCart()
       val input: Seq[Item] = Seq(Apple, Orange, Orange, Orange)
       val result: Double = classUnderTest.checkout(input)
-      val expectedResult: Double = 0.6D + 0.25D + 0.25D + 0.25D
+      val expectedResult: Double = 1.10D
 
       result mustBe expectedResult
     }
@@ -153,7 +153,10 @@ class ShoppingCartSpec extends WordSpec with MustMatchers with GeneratorDrivenPr
       forAll() { input: Seq[Item] =>
         val classUnderTest: ShoppingCart = new ShoppingCart()
         val result: Double = classUnderTest.checkout(input)
-        val expectedResult: Double = input.foldLeft(0D)((total, item) => total + item.price)
+        val appleDiscount: Double = classUnderTest.calculateAppleDiscount(input)
+        val orangeDiscount: Double = classUnderTest.calculateOrangeDiscount(input)
+        val total = input.foldLeft(0D)((total, item) => total + item.price) - appleDiscount - orangeDiscount
+        val expectedResult: Double = BigDecimal(total).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble
 
         result mustBe expectedResult
       }
